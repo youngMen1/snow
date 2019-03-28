@@ -27,7 +27,7 @@ public class SwaggerConfig {
 
     @Bean
     public Docket createRestApi(SwaggerApiInfo swaggerApiInfo) {
-        return (new Docket(DocumentationType.SWAGGER_2)).apiInfo(new ApiInfo(swaggerApiInfo.getTitle(), swaggerApiInfo.getDescription(), swaggerApiInfo.getVersion(), swaggerApiInfo.getTermsOfServiceUrl(), new Contact(swaggerApiInfo.getContactName(), swaggerApiInfo.getContactUrl(), swaggerApiInfo.getContactEmail()), "", "",null)).select().apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class)).paths(PathSelectors.any()).build();
+        return (new Docket(DocumentationType.SWAGGER_2)).apiInfo(new ApiInfo(swaggerApiInfo.getTitle(), swaggerApiInfo.getDescription(), swaggerApiInfo.getVersion(), swaggerApiInfo.getTermsOfServiceUrl(), swaggerApiInfo.getContactName(), "", "")).select().apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class)).paths(PathSelectors.any()).build();
     }
 
     @Bean

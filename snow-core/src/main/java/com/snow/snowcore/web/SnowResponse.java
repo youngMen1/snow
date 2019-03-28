@@ -1,49 +1,65 @@
 package com.snow.snowcore.web;
 
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 /**
  * @author zhiqiang.feng
  * @version 1.0
  * @date-time 2019/3/26 09:59
  * @description 響應
  **/
-@Getter
-@Setter
-@NoArgsConstructor
 public class SnowResponse<T> {
-    /**
-     * 響應頭，默認成功
-     */
-    @ApiModelProperty(value = "響應頭")
-    private SnowResponseHeader header = SnowResponseHeader.SUCCESS;
-
-    /**
-     * 響應體
-     */
-    @ApiModelProperty(value = "響應數據")
+    private SnowResponseHeader header;
     private T data;
 
-    /**
-     * 構造器
-     *
-     * @param data 數據
-     */
     public SnowResponse(T data) {
         this.data = data;
     }
 
-    /**
-     * 創建
-     *
-     * @param data 數據
-     * @param <T>  泛型
-     * @return 響應
-     */
-    public static <T> SnowResponse create(T data) {
-        return new SnowResponse(data);
+    public static <T> SnowResponse<T> ok(T data) {
+        return new SnowResponse(new SnowResponseHeader(), data);
+    }
+
+    public static <T> SnowResponse<T> create(String code, String message) {
+        return (SnowResponse<T>) create(code, message, (Object) null);
+    }
+
+    public static <T> SnowResponse<T> create(String code, String message, T data) {
+        SnowResponse<T> response = new SnowResponse();
+        response.setHeader(new SnowResponseHeader(code, message));
+        response.setData(data);
+        return response;
+    }
+
+    public static SnowResponseBuilder builder() {
+        SnowResponseBuilder sigmaResponseBuilder = new SnowResponseBuilder(new SnowResponse());
+        return sigmaResponseBuilder;
+    }
+
+    public SnowResponseHeader getHeader() {
+        return this.header;
+    }
+
+    public T getData() {
+        return this.data;
+    }
+
+    public void setHeader(final SnowResponseHeader header) {
+        this.header = header;
+    }
+
+    public void setData(final T data) {
+        this.data = data;
+    }
+
+    public SnowResponse() {
+    }
+
+    public SnowResponse(final SnowResponseHeader header, final T data) {
+        this.header = header;
+        this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return "SnowResponse(header=" + this.getHeader() + ", data=" + this.getData() + ")";
     }
 }

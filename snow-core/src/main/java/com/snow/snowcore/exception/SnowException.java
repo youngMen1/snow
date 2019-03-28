@@ -1,10 +1,5 @@
 package com.snow.snowcore.exception;
 
-import com.snow.snowcore.web.SnowResponseHeader;
-import lombok.Getter;
-
-import javax.validation.constraints.NotNull;
-
 /**
  * @author zhiqiang.feng
  * @version 1.0
@@ -13,20 +8,38 @@ import javax.validation.constraints.NotNull;
  **/
 public class SnowException extends RuntimeException {
 
-    @Getter
-    private SnowResponseHeader responseHeader;
+    private String errorCode = "500";
+    private Object[] arguments;
+
+    public SnowException() {
+    }
+
+    public SnowException(String message) {
+        super(message);
+    }
+
+    public SnowException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public SnowException(Throwable cause) {
+        super(cause);
+    }
 
     protected SnowException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 
-    /**
-     * 通過header來構造
-     *
-     * @param responseHeader
-     */
-    public SnowException(@NotNull SnowResponseHeader responseHeader) {
-        super(responseHeader.getMessage());
-        this.responseHeader = responseHeader;
+    public SnowException withArguments(Object... arguments) {
+        this.arguments = arguments;
+        return this;
+    }
+
+    public String getErrorCode() {
+        return this.errorCode;
+    }
+
+    public Object[] getArguments() {
+        return this.arguments;
     }
 }

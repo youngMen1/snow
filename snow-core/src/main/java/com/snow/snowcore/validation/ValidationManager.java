@@ -6,8 +6,10 @@ import lombok.Setter;
 import lombok.experimental.var;
 import org.springframework.stereotype.Component;
 
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zhiqiang.feng
@@ -18,47 +20,39 @@ import java.util.List;
 @Component
 public class ValidationManager {
 
-    private LinkedHashMap<Validation, Object> hashMap = new LinkedHashMap<>(100);
-    /**
-     * 失敗了是否立即停止
-     */
-    @Getter
-    @Setter
+    private LinkedHashMap<Validation, Object> hashMap = new LinkedHashMap(100);
+
     private Boolean stopWhenFailed;
 
-    /**
-     * 添加驗證
-     *
-     * @param validation  驗證
-     * @param dataContext 上下問
-     * @return
-     */
+    public ValidationManager() {
+    }
+
     public ValidationManager add(Validation validation, Object dataContext) {
-        hashMap.put(validation, dataContext);
+        this.hashMap.put(validation, dataContext);
         return this;
     }
 
-    /**
-     * 驗證
-     *
-     * @return 驗證結果
-     */
     public ValidationSummary validate() {
-
         List<ValidationResult> results = Lists.newArrayList();
+        Iterator it = this.hashMap.entrySet().iterator();
 
-        var it = hashMap.entrySet().iterator();
-        while (it.hasNext()) {
-            var validation = it.next();
-
-            var ret = validation.getKey().validate(validation.getValue());
+        while(it.hasNext()) {
+            Map.Entry<Validation, Object> validation = (Map.Entry)it.next();
+            ValidationResult ret = ((Validation)validation.getKey()).validate(validation.getValue());
             results.add(ret);
-
             if (!ret.getSuccess()) {
                 break;
             }
         }
 
         return new ValidationSummary(results);
+    }
+
+    public Boolean getStopWhenFailed() {
+        return this.stopWhenFailed;
+    }
+
+    public void setStopWhenFailed(final Boolean stopWhenFailed) {
+        this.stopWhenFailed = stopWhenFailed;
     }
 }

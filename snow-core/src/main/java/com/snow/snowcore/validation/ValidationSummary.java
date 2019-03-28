@@ -1,10 +1,5 @@
 package com.snow.snowcore.validation;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -14,32 +9,32 @@ import java.util.Optional;
  * @date-time 2019/3/26 09:59
  * @description 匯總
  **/
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class ValidationSummary {
 
-    /**
-     * 驗證結果列表
-     */
     private List<ValidationResult> resultList;
 
-    /**
-     * 是否成功
-     *
-     * @return
-     */
     public boolean success() {
-        return !findFirst().isPresent();
+        return !this.findFirst().isPresent();
     }
 
-    /**
-     * 獲取第一個 驗證不通過結果
-     *
-     * @return 第一個不成功的
-     */
     public Optional<ValidationResult> findFirst() {
-        return resultList.stream().filter(zw -> !zw.getSuccess()).findAny();
+        return this.resultList.stream().filter((zw) -> {
+            return !zw.getSuccess();
+        }).findAny();
+    }
+
+    public List<ValidationResult> getResultList() {
+        return this.resultList;
+    }
+
+    public void setResultList(final List<ValidationResult> resultList) {
+        this.resultList = resultList;
+    }
+
+    public ValidationSummary() {
+    }
+
+    public ValidationSummary(final List<ValidationResult> resultList) {
+        this.resultList = resultList;
     }
 }

@@ -14,9 +14,11 @@ public class RequestFilter implements Filter {
     public RequestFilter() {
     }
 
+    @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
 
+    @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         if (!(servletRequest instanceof RequestWrapper)) {
             RequestWrapper requestWrapper = new RequestWrapper((HttpServletRequest)servletRequest);
@@ -26,6 +28,7 @@ public class RequestFilter implements Filter {
         }
     }
 
+    @Override
     public void destroy() {
     }
 }

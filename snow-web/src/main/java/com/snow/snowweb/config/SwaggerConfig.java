@@ -33,6 +33,6 @@ public class SwaggerConfig {
     @Bean
     @ConditionalOnMissingBean
     public SwaggerApiInfo swaggerApiInfo() {
-        return SwaggerApiInfo.builder().title("sigma").description(".").termsOfServiceUrl("http://www.kolema-ai.com/").version("1.0").build();
+        return SwaggerApiInfo.builder().title("snow").description(".").termsOfServiceUrl("http://fengzhiqiang.top/").version("1.0").build();
     }
 }

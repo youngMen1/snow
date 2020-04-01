@@ -24,24 +24,30 @@ public class RequestWrapper extends HttpServletRequestWrapper {
         this.body = this.readBytes(request.getReader(), "utf-8");
     }
 
+    @Override
     public BufferedReader getReader() throws IOException {
         return new BufferedReader(new InputStreamReader(this.getInputStream()));
     }
 
+    @Override
     public ServletInputStream getInputStream() throws IOException {
         final ByteArrayInputStream bais = new ByteArrayInputStream(this.body);
         return new ServletInputStream() {
+            @Override
             public boolean isFinished() {
                 return false;
             }
 
+            @Override
             public boolean isReady() {
                 return false;
             }
 
+            @Override
             public void setReadListener(ReadListener listener) {
             }
 
+            @Override
             public int read() throws IOException {
                 return bais.read();
             }
